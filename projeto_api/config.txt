@@ -1,0 +1,13 @@
+[server]
+host = 0.0.0.0
+port = 6532
+
+[ngrok]
+token_file = ngrok_token.json
+port = 6532
+url_server_fixo = http://127.0.0.1:3000
+public_url = https://fa05-168-90-211-194.ngrok-free.app
+
+[autorizador]
+file_path = autorizador.json
+
