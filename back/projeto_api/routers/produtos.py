@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Header, HTTPException
 import json
 import os
-from db import get_connection
+from ..db import get_connection
 from starlette.concurrency import run_in_threadpool
 
 router = APIRouter()
@@ -11,10 +11,10 @@ def decode_value(value, encoding="windows-1252"):
         return value.decode(encoding, errors="replace")
     return value
 
-def listar_itens_sync():
+def listar_produtos_sync():
     con = get_connection()
     cur = con.cursor()
-    cur.execute("SELECT * FROM NFS_ITENS")
+    cur.execute("SELECT * FROM PRODUTOS")
     colunas = [desc[0] for desc in cur.description]
     dados = []
     for row in cur.fetchall():
@@ -32,7 +32,7 @@ def is_authorized(nome):
     return any(entry["nome"] == nome and entry["status"] for entry in data)
 
 @router.get("/")
-async def listar_itens(nome: str = Header(None)):
+async def listar_produtos(nome: str = Header(None)):
     if not nome or not is_authorized(nome):
         raise HTTPException(status_code=403, detail="Usuário não permitido.")
-    return await run_in_threadpool(listar_itens_sync)
+    return await run_in_threadpool(listar_produtos_sync)

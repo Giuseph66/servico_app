@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Header, HTTPException
 import json
 import os
-from db import get_connection
+from ..db import get_connection
 
 router = APIRouter()
 

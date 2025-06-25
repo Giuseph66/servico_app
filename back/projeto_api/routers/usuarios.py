@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Header, HTTPException
 import json
 import os
-from db import get_connection
+
+# Usa o utilitário de conexão definido em projeto_api.db
+from ..db import get_connection
 
 router = APIRouter()
 
@@ -14,15 +16,15 @@ def is_authorized(nome):
     return any(entry["nome"] == nome and entry["status"] for entry in data)
 
 @router.get("/")
-def listar_comissoes(nome: str = Header(None)):
+def listar_usuarios(nome: str = Header(None)):
     if not nome or not is_authorized(nome):
         raise HTTPException(status_code=403, detail="Usuário não permitido.")
-    con = get_connection()
+    con = get_connection() 
     try:
         cur = con.cursor()
-        cur.execute("SELECT * FROM COMISSOES")
+        cur.execute("SELECT * FROM USUARIOS")
         colunas = [desc[0] for desc in cur.description]
         dados = [dict(zip(colunas, row)) for row in cur.fetchall()]
         return dados
     finally:
-        con.close()
+        con.close()  

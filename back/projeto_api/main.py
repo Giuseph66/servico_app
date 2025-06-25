@@ -90,5 +90,9 @@ def send_url(token: str = Body(...), public_url: str = Body(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host=server_host, port=server_port, reload=True)
+    import subprocess
+
+    subprocess.run(['./inicia.sh'], shell=True)
+
+    uvicorn.run("main:app", host=server_host, port=server_port, reload=False)
 
